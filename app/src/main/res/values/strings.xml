@@ -3,4 +3,8 @@
     <string name="title_activity_second">SecondActivity</string>
     <string name="title_activity_more_inf">MoreInfActivity</string>
     <string name="title_activity_thinfo">ThinfoActivity</string>
+    <string name="title_activity_main_autorize">MainAutorize</string>
+    <string name="title_activity_main_add_sen">MainAddSen</string>
+    <string name="title_activity_main_add_th">MainAddTh</string>
+    <string name="title_activity_main_show_th_table">MainShowThTable</string>
 </resources>

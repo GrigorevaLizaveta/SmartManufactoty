@@ -16,6 +16,26 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".MainShowThTable"
+            android:exported="false"
+            android:label="@string/title_activity_main_show_th_table"
+            android:theme="@style/Theme.Smart" />
+        <activity
+            android:name=".MainAddTh"
+            android:exported="false"
+            android:label="@string/title_activity_main_add_th"
+            android:theme="@style/Theme.Smart" />
+        <activity
+            android:name=".MainAddSen"
+            android:exported="false"
+            android:label="@string/title_activity_main_add_sen"
+            android:theme="@style/Theme.Smart" />
+        <activity
+            android:name=".MainAutorize"
+            android:exported="false"
+            android:label="@string/title_activity_main_autorize"
+            android:theme="@style/Theme.Smart" />
+        <activity
             android:name=".ThinfoActivity"
             android:exported="false"
             android:label="@string/title_activity_thinfo"

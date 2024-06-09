@@ -46,7 +46,7 @@ import ru.protei.smart.domain.Thing
 import ru.protei.smart.ui.theme.PurpleGrey80
 
 
-val ReservRooms = arrayOf("Цех", "Помещение 2", "Добавить")
+val ReservRooms = arrayOf("Помещение 1", "Помещение 2", "Добавить")
 
 @Composable
 fun PageMain(
