@@ -16,6 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".MainAddType"
+            android:exported="false"
+            android:label="@string/title_activity_main_add_type"
+            android:theme="@style/Theme.Smart" />
+        <activity
+            android:name=".MainAddRoom"
+            android:exported="false"
+            android:label="@string/title_activity_main_add_room"
+            android:theme="@style/Theme.Smart" />
+        <activity
             android:name=".MainShowThTable"
             android:exported="false"
             android:label="@string/title_activity_main_show_th_table"

@@ -7,4 +7,6 @@
     <string name="title_activity_main_add_sen">MainAddSen</string>
     <string name="title_activity_main_add_th">MainAddTh</string>
     <string name="title_activity_main_show_th_table">MainShowThTable</string>
+    <string name="title_activity_main_add_room">MainAddRoom</string>
+    <string name="title_activity_main_add_type">MainAddType</string>
 </resources>
