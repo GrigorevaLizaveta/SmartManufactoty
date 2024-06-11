@@ -3,6 +3,8 @@ package ru.protei.smart
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,15 +25,13 @@ val thData = listOf(
     Thing(0, "Розетка", false),
 )
 
-
 class MainActivity : ComponentActivity() {
-   override fun onCreate(savedInstanceState: Bundle?) {
 
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var updateRunnable: Runnable
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContent {
-//            SmartTheme {
-//                Greeting()
-//            }}}}
 
         val service = RetrofitClient.getRetrofitInstance().create(SensorService::class.java)
 
@@ -39,124 +39,97 @@ class MainActivity : ComponentActivity() {
         var sensors: List<Sensor> = emptyList()
         var things: List<Thing> = emptyList()
 
-        // Получаем данные для списка sensors
-        service.getSensors()?.enqueue(object : Callback<List<List<String?>?>?> {
-            override fun onResponse(
-                call: Call<List<List<String?>?>?>,
-                response: Response<List<List<String?>?>?>
-            ) {
-                if (response.isSuccessful) {
-                    // Преобразуем полученные данные в список сенсоров
-                    sensors = convertToSensors(response.body())
-                    Log.d("Send", sensors.toString())
+        updateRunnable = object : Runnable {
+            override fun run() {
+                // Получаем данные для списка sensors
+                service.getSensors()?.enqueue(object : Callback<List<List<String?>?>?> {
+                    override fun onResponse(
+                        call: Call<List<List<String?>?>?>,
+                        response: Response<List<List<String?>?>?>
+                    ) {
+                        if (response.isSuccessful) {
+                            sensors = convertToSensors(response.body())
+                            Log.d("Send", sensors.toString())
 
-                    // После получения данных для списка sensors, получаем данные для списка things
-                    service.getThings()?.enqueue(object : Callback<List<List<String?>?>?> {
-                        override fun onResponse(
-                            call: Call<List<List<String?>?>?>,
-                            response: Response<List<List<String?>?>?>
-                        ) {
-                            if (response.isSuccessful) {
-                                // Преобразуем полученные данные в список сенсоров для things
-                                things = convertToThings(response.body())
-                                Log.d("Send", things.toString())
+                            // Получаем данные для списка things
+                            service.getThings()?.enqueue(object : Callback<List<List<String?>?>?> {
+                                override fun onResponse(
+                                    call: Call<List<List<String?>?>?>,
+                                    response: Response<List<List<String?>?>?>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        things = convertToThings(response.body())
+                                        Log.d("Send", things.toString())
 
-                                // После получения данных вызываем setContent с актуальными данными
-                                setContent {
-                                    SmartTheme {
-                                        PageMain(
-                                            onButtonClick = {
-                                                val intent = Intent(this@MainActivity, SecondActivity::class.java)
-                                                startActivity(intent)
-                                            },
-                                            onSensorItemClick = { sensor ->
-                                                val intent = Intent(this@MainActivity, MoreInfActivity::class.java).apply {
-                                                    putExtra("name", sensor.name)
-                                                    putExtra("data", sensor.data)
-                                                    putExtra("status", sensor.status)
-                                                    putExtra("tip", sensor.tip)
-                                                }
-                                                startActivity(intent)
-                                            },
-                                            onThItemClick = { thing ->
-                                                val intent = Intent(this@MainActivity, ThinfoActivity::class.java).apply {
-                                                    putExtra("id", thing.id)
-                                                    putExtra("name", thing.name.toString())
-                                                    putExtra("status", thing.status)
-                                                }
-                                                startActivity(intent)
-                                            },
-                                            sensors, // Передаем список sensors
-                                            things   // Передаем список things
-                                        )
+                                        // Обновляем UI
+                                        updateUI(sensors, things)
+                                    } else {
+                                        Log.d("Send", "no things")
+                                        updateUI(sensors, thData)
                                     }
                                 }
-                            } else {
-                                Log.d("Send", "no things")
-                                setContent {
-                                    SmartTheme {
-                                        PageMain(
-                                            onButtonClick = {
-                                                val intent = Intent(this@MainActivity, SecondActivity::class.java)
-                                                startActivity(intent)
-                                            },
-                                            onSensorItemClick = {
-                                                val intent = Intent(this@MainActivity, MoreInfActivity::class.java)
-                                                // Передача дополнительных данных в другую активити, если необходимо
-                                                // intent.putExtra("SENSOR_ID", sensor.id)
-                                                startActivity(intent)
-                                            },
-                                            onThItemClick = {
-                                                val intent = Intent(this@MainActivity, ThinfoActivity::class.java)
-                                                // Передача дополнительных данных в другую активити, если необходимо
-                                                // intent.putExtra("SENSOR_ID", sensor.id)
-                                                startActivity(intent)
-                                            },
-                                            sensors, // Передаем список sensors
-                                            thData   // Передаем список things
-                                        )
-                                    }
-                                }
-                            }
-                        }
 
-                        override fun onFailure(call: Call<List<List<String?>?>?>, t: Throwable) {
-                            Log.e("Send", "Error occurred while fetching things: ${t.message}")
-                        }
-                    })
-                } else {
-                    Log.d("Send", "no sensors")
-                    setContent {
-                        SmartTheme {
-                            PageMain(
-                                onButtonClick = {
-                                    val intent = Intent(this@MainActivity, SecondActivity::class.java)
-                                    startActivity(intent)
-                                },
-                                onSensorItemClick = {
-                                    val intent = Intent(this@MainActivity, MoreInfActivity::class.java)
-                                    // Передача дополнительных данных в другую активити, если необходимо
-                                    // intent.putExtra("SENSOR_ID", sensor.id)
-                                    startActivity(intent)
-                                },
-                                onThItemClick = {
-                                    val intent = Intent(this@MainActivity, MoreInfActivity::class.java)
-                                    // Передача дополнительных данных в другую активити, если необходимо
-                                    // intent.putExtra("SENSOR_ID", sensor.id)
-                                    startActivity(intent)
-                                },
-                                sensorData = sensorData, // Передаем список sensors
-                                thData = thData   // Передаем список things
-                            )
+                                override fun onFailure(call: Call<List<List<String?>?>?>, t: Throwable) {
+                                    Log.e("Send", "Error occurred while fetching things: ${t.message}")
+                                }
+                            })
+                        } else {
+                            Log.d("Send", "no sensors")
+                            updateUI(sensorData, thData)
                         }
                     }
-                }
+
+                    override fun onFailure(call: Call<List<List<String?>?>?>, t: Throwable) {
+                        Log.e("Send", "Error occurred while fetching sensors: ${t.message}")
+                    }
+                })
+
+                // Повторяем этот Runnable через 30 секунд
+                handler.postDelayed(this, 30000)
             }
-            override fun onFailure(call: Call<List<List<String?>?>?>, t: Throwable) {
-                Log.e("Send", "Error occurred while fetching sensors: ${t.message}")
+        }
+
+        // Запускаем первое выполнение Runnable
+        handler.post(updateRunnable)
+    }
+
+    private fun updateUI(sensors: List<Sensor>, things: List<Thing>) {
+        setContent {
+            SmartTheme {
+                PageMain(
+                    onButtonClick = {
+                        val intent = Intent(this@MainActivity, SecondActivity::class.java)
+                        startActivity(intent)
+                    },
+                    onSensorItemClick = { sensor ->
+                        val intent = Intent(this@MainActivity, MoreInfActivity::class.java).apply {
+                            putExtra("name", sensor.name)
+                            putExtra("data", sensor.data)
+                            putExtra("status", sensor.status)
+                            putExtra("tip", sensor.tip)
+                        }
+                        startActivity(intent)
+                    },
+                    onThItemClick = { thing ->
+                        val intent = Intent(this@MainActivity, ThinfoActivity::class.java).apply {
+                            putExtra("id", thing.id)
+                            putExtra("name", thing.name.toString())
+                            putExtra("status", thing.status)
+                        }
+                        startActivity(intent)
+                    },
+                    sensorData = sensorData, // Передаем список sensors
+                    thData = thData   // Передаем список things
+                )
             }
-               })
-}
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Очищаем handler при уничтожении активности, чтобы избежать утечек памяти
+        handler.removeCallbacks(updateRunnable)
+    }
 
     // Функция для преобразования данных в список сенсоров
     private fun convertToSensors(data: List<List<String?>?>?): List<Sensor> {
@@ -174,7 +147,6 @@ class MainActivity : ComponentActivity() {
 
     // Функция для преобразования данных в список вещей
     private fun convertToThings(data: List<List<String?>?>?): List<Thing> {
-
         val thingsList: MutableList<Thing> = mutableListOf()
         data?.forEach { thingData ->
             val id = thingData?.get(0) ?: ""

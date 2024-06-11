@@ -61,7 +61,7 @@ fun PageMain(
             Text(
                 text = "Добро пожаловать на 'умное' производство!!!",
                 style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, textAlign = TextAlign.Center),
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(10.dp)
             )
         }
         Row(

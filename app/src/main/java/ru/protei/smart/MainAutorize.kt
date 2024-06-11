@@ -1,71 +1,67 @@
 package ru.protei.smart
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.protei.smart.ui.theme.SmartTheme
-import androidx.compose.foundation.layout.Row
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import ru.protei.smart.ui.theme.SmartTheme
 
 class MainAutorize : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SmartTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting()
+                    Greeting(onLogin = { username, password ->
+                        if (username == "liza" && password == "00000") {
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
             }
         }
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Greeting(modifier: Modifier = Modifier) {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+fun Greeting(onLogin: (String, String) -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
-        Row {
-            Text(
-                text = "Авторизация",
-                style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp),
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-        }
+
+        Text(
+            text = "Авторизация",
+            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp),
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Введите логин") },
-            //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Введите логин") }
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
@@ -78,7 +74,7 @@ fun Greeting(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            // обработка нажатия кнопки входа
+            onLogin(username, password)
         }) {
             Text("Войти")
         }
