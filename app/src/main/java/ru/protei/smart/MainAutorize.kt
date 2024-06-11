@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import ru.protei.smart.ui.theme.SmartTheme
 
 class MainAutorize : ComponentActivity() {
@@ -68,7 +69,8 @@ fun Greeting(onLogin: (String, String) -> Unit, modifier: Modifier = Modifier) {
             value = password,
             onValueChange = { password = it },
             label = { Text("Введите пароль") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation()
         )
 
         Spacer(modifier = Modifier.height(16.dp))

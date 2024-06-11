@@ -68,7 +68,7 @@ class MainAddTh : ComponentActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var password by remember { mutableStateOf("") }
+            var macad by remember { mutableStateOf("") }
 
             Row {
                 Text(
@@ -126,8 +126,8 @@ class MainAddTh : ComponentActivity() {
                 )
             }
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = macad,
+                onValueChange = { macad = it },
                 label = { Text("Введите значение") },
                 //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )

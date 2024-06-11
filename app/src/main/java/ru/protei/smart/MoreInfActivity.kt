@@ -108,6 +108,8 @@ class MoreInfActivity : ComponentActivity() {
 fun Greeting(sensor: Sensor, onBackButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     var status by remember { mutableStateOf(sensor.status) }
     val service = RetrofitClient.getRetrofitInstance().create(SensorService::class.java)
+    var mini by remember { mutableStateOf("") }
+    var maxi by remember { mutableStateOf("") }
     Column(
         modifier = modifier
             .padding(vertical = 8.dp)
@@ -231,8 +233,8 @@ fun Greeting(sensor: Sensor, onBackButtonClick: () -> Unit, modifier: Modifier =
             ) {
                 Spacer(modifier = Modifier.width(8.dp))
                 TextField(
-                    value = mini,
-                    onValueChange = { mini = it },
+                    value = maxi,
+                    onValueChange = { maxi = it },
                     modifier = Modifier
                         .padding(bottom = 10.dp)
                         .width(100.dp),

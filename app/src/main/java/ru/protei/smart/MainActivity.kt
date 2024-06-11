@@ -1,6 +1,5 @@
 package ru.protei.smart
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -97,10 +96,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             SmartTheme {
                 PageMain(
+                    onButtonClickTh = { val intent = Intent(this@MainActivity, MainAddTh::class.java)
+                        this@MainActivity.startActivity(intent)},
+                    onButtonClickS = { val intent = Intent(this@MainActivity, MainAddSen::class.java)
+                        this@MainActivity.startActivity(intent)},
                     onButtonClick = {
                         val intent = Intent(this@MainActivity, SecondActivity::class.java)
                         startActivity(intent)
                     },
+                    onButtonClick2 = { val intent = Intent(this@MainActivity, MainShowThTable::class.java)
+                        this@MainActivity.startActivity(intent)},
                     onSensorItemClick = { sensor ->
                         val intent = Intent(this@MainActivity, MoreInfActivity::class.java).apply {
                             putExtra("name", sensor.name)

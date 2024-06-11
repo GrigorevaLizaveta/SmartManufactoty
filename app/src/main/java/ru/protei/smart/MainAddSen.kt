@@ -71,6 +71,8 @@ class MainAddSen : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             var password by remember { mutableStateOf("") }
+            var mini by remember { mutableStateOf("") }
+            var maxi by remember { mutableStateOf("") }
 
             Row {
                 Text(
@@ -133,8 +135,8 @@ class MainAddSen : ComponentActivity() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value =maxi,
+                onValueChange = { maxi = it },
                 label = { Text("Введите значение") },
                 //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
@@ -144,8 +146,8 @@ class MainAddSen : ComponentActivity() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = mini,
+                onValueChange = { mini = it },
                 label = { Text("Введите значение") },
                 //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
@@ -156,6 +158,12 @@ class MainAddSen : ComponentActivity() {
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Введите значение") },
+                //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
@@ -171,7 +179,7 @@ class MainAddSen : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun TDropdown() {
-        val sensorList = arrayOf("Датчик света", "Розетка", "Добавить")
+        val sensorList = arrayOf("Датчик света", "Датчик дыма", "Добавить")
         val context = LocalContext.current
         var expanded by remember { mutableStateOf(false) }
         var selectedText by remember { mutableStateOf(ReservRooms[0]) }

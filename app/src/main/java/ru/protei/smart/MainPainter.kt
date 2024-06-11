@@ -1,5 +1,6 @@
 package ru.protei.smart
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import ru.protei.smart.domain.Sensor
 import ru.protei.smart.domain.Thing
 import ru.protei.smart.ui.theme.PurpleGrey80
@@ -50,7 +52,10 @@ val ReservRooms = arrayOf("Помещение 1", "Помещение 2", "До�
 
 @Composable
 fun PageMain(
-    onButtonClick: () -> Unit, // Функция для обработки нажатия на кнопку "Посмотреть статистику"
+    onButtonClick: () -> Unit,
+    onButtonClick2: () -> Unit,
+    onButtonClickTh: () -> Unit,
+    onButtonClickS: () -> Unit,// Функция для обработки нажатия на кнопку "Посмотреть статистику"
     onSensorItemClick: (Sensor) -> Unit, // Функция для обработки нажатия на элемент списка датчиков
     onThItemClick: (Thing) -> Unit,
     sensorData: List<Sensor>,
@@ -81,7 +86,7 @@ fun PageMain(
                     fontSize = 16.sp))
             Spacer(modifier = Modifier.width(35.dp))
             FloatingActionButton(
-                onClick = {},
+                onClick = onButtonClickS,
                 modifier = Modifier
                     .padding(16.dp)
                     .size(48.dp) // Уменьшение размера кнопки
@@ -119,7 +124,7 @@ fun PageMain(
                     fontSize = 16.sp))
             Spacer(modifier = Modifier.width(35.dp))
             FloatingActionButton(
-                onClick = {},
+                onClick = onButtonClickTh,
                 modifier = Modifier
                     .padding(16.dp)
                     .size(48.dp) // Уменьшение размера кнопки
@@ -127,7 +132,7 @@ fun PageMain(
                 Icon(Icons.Default.Add, contentDescription = "Add", modifier = Modifier.size(24.dp))
             }
             Button(
-                onClick = onButtonClick,
+                onClick = onButtonClick2,
                 modifier = Modifier.padding(end = 16.dp)
             ) {
                 Text("Подробнее")
