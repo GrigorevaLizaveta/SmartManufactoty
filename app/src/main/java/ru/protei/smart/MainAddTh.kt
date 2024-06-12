@@ -69,7 +69,7 @@ class MainAddTh : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             var macad by remember { mutableStateOf("") }
-
+            Spacer(modifier = Modifier.height(16.dp))
             Row {
                 Text(
                     text = "Добавить 'вещь'",
@@ -104,24 +104,12 @@ class MainAddTh : ComponentActivity() {
                 verticalAlignment = Alignment.Top
             ) {
                 RDropdown()
-                FloatingActionButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .size(48.dp) // Уменьшение размера кнопки
-                ) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = "Add",
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row {
                 Text(
-                    text = "Укажите MAC-адрес:",
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                    text = "MAC-адрес:",
+                    style = TextStyle(fontSize = 18.sp),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
@@ -131,19 +119,28 @@ class MainAddTh : ComponentActivity() {
                 label = { Text("Введите значение") },
                 //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row {
+            Column( modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                Row ( modifier = Modifier.padding(5.dp),
+                    verticalAlignment = Alignment.CenterVertically){
                 Text(
                     text = "Управляющий датчик:",
                     style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
+            FloatingActionButton(
+                onClick = {},
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(48.dp) // Уменьшение размера кнопки
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Add", modifier = Modifier.size(24.dp))
+            }
             Button(onClick = {
-                // обработка нажатия кнопки входа
+                Toast.makeText(this@MainAddTh, "Нет соединения с сервером", Toast.LENGTH_SHORT).show()
             }) {
                 Text("Добавить")
-            }
+            }}
         }
     }
 

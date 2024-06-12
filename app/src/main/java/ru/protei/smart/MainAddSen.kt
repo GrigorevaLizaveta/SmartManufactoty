@@ -153,8 +153,8 @@ class MainAddSen : ComponentActivity() {
             )
             Row {
                 Text(
-                    text = "Укажите MAC-адрес:",
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                    text = "MAC-адрес:",
+                    style = TextStyle(fontSize = 18.sp),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
@@ -167,7 +167,7 @@ class MainAddSen : ComponentActivity() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
-                // обработка нажатия кнопки входа
+                Toast.makeText(this@MainAddSen, "Нет соединения с сервером", Toast.LENGTH_SHORT).show()
             }) {
                 Text("Добавить")
             }
