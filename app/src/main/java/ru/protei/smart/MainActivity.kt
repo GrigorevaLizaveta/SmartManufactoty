@@ -106,6 +106,8 @@ class MainActivity : ComponentActivity() {
                     },
                     onButtonClick2 = { val intent = Intent(this@MainActivity, MainShowThTable::class.java)
                         this@MainActivity.startActivity(intent)},
+                    onButtonClickRoom = { val intent = Intent(this@MainActivity, MainAddRoom::class.java)
+                        this@MainActivity.startActivity(intent)},
                     onSensorItemClick = { sensor ->
                         val intent = Intent(this@MainActivity, MoreInfActivity::class.java).apply {
                             putExtra("name", sensor.name)

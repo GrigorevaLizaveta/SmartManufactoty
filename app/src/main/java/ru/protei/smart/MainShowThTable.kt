@@ -123,10 +123,10 @@ class MainShowThTable : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun ThDropdown() {
-        val dataList = arrayOf("Розетка", "1 час", "Датчик температуры", "Датчик дыма", "Датчик влажности")
+        val dataList = arrayOf("Розетка")
         val context = LocalContext.current
         var expanded by remember { mutableStateOf(false) }
-        var selectedText by remember { mutableStateOf(dataVals[0]) }
+        var selectedText by remember { mutableStateOf(dataList[0]) }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -168,10 +168,10 @@ class MainShowThTable : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun DataThDropdown() {
-        val dataList = arrayOf("22-05-2024", "1 час", "Датчик температуры", "Датчик дыма", "Датчик влажности")
+        val dataList = arrayOf("13-06-2024")
         val context = LocalContext.current
         var expanded by remember { mutableStateOf(false) }
-        var selectedText by remember { mutableStateOf(dataVals[0]) }
+        var selectedText by remember { mutableStateOf(dataList[0]) }
         Box(
             modifier = Modifier
                 .fillMaxWidth()

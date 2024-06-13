@@ -1,8 +1,10 @@
 package ru.protei.smart
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -31,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,9 +50,9 @@ import ru.protei.smart.SensorsDB.SensorService
 import ru.protei.smart.domain.Sensor
 import ru.protei.smart.ui.theme.PurpleGrey80
 
-var maxi ="0"
-var mini = "0"
-var tip = "Нет"
+var maxi ="500"
+var mini = "200"
+var tip = "лк"
 
 
 class MoreInfActivity : ComponentActivity() {
@@ -108,27 +111,15 @@ class MoreInfActivity : ComponentActivity() {
 fun Greeting(sensor: Sensor, onBackButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     var status by remember { mutableStateOf(sensor.status) }
     val service = RetrofitClient.getRetrofitInstance().create(SensorService::class.java)
-    var mini by remember { mutableStateOf("") }
-    var maxi by remember { mutableStateOf("") }
+    var mini by remember { mutableStateOf("500") }
+    var maxi by remember { mutableStateOf("200") }
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        Row(
-//            modifier = Modifier.padding(16.dp),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Button(
-//                onClick = onBackButtonClick,
-//                modifier = Modifier
-//                    .padding(end = 6.dp)
-//            ) {
-//                Text("Назад")
-//            }
-//            Spacer(modifier = Modifier.width(16.dp))
-//        }
         Row {
             Text(
                 text = sensor.name,
@@ -299,7 +290,8 @@ fun Greeting(sensor: Sensor, onBackButtonClick: () -> Unit, modifier: Modifier =
                 )
             }
             FloatingActionButton(
-                onClick = {},
+                onClick = {
+                    showToast1(context, "Нет соединения с сервером") },
                 modifier = Modifier
                     .padding(16.dp)
                     .size(48.dp) // Уменьшение размера кнопки
@@ -307,7 +299,11 @@ fun Greeting(sensor: Sensor, onBackButtonClick: () -> Unit, modifier: Modifier =
                 Icon(Icons.Default.Add, contentDescription = "Add", modifier = Modifier.size(24.dp))
             }
         }
-    }}
+    }
+}
+fun showToast1(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}
 
 
 

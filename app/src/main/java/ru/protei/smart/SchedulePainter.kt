@@ -1,5 +1,6 @@
 package ru.protei.smart
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -59,7 +60,7 @@ data class ChartData(
 )
 
 //резервные данные
-val coffeeDrinks = arrayOf("Датчик звука", "Датчик света", "Датчик температуры", "Датчик дыма", "Датчик влажности")
+val coffeeDrinks = arrayOf("Датчик света")
 val dataVals = arrayOf(LocalDate.now().toString(), "нет")
 
 fun getSensList(onSuccess: (List<String>) -> Unit, onFailure: (String) -> Unit) {
@@ -155,7 +156,7 @@ fun PageGraf(onBackButtonClick: () -> Unit) {
                     Log.e("Send", errorMessage)
                 }
             )
-            val coffee = arrayOf("10 минут", "1 час", "Датчик температуры", "Датчик дыма", "Датчик влажности")
+            val coffee = arrayOf("10 минут", "1 час", "13.06.2024")
             DataDropdown(dataList = coffee)
         }
         Row(
@@ -178,11 +179,7 @@ fun PageGraf(onBackButtonClick: () -> Unit) {
             modifier = Modifier.padding(5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MakeGrBut {
-                // Обновление данных при нажатии на кнопку(Вызов метода, который берет данные
-                // из бд и преобразует их в массив)
-                points = getPointListSmoke2()
-            }
+            MakeGrBut()
         }
         LineChart(
             modifier = Modifier
@@ -195,13 +192,19 @@ fun PageGraf(onBackButtonClick: () -> Unit) {
 }
 
 @Composable
-private fun MakeGrBut(onClick: () -> Unit) {
+private fun MakeGrBut() {
+    val context = LocalContext.current
     Button(
-        onClick = onClick, // Обработка нажатия кнопки
+        onClick = {
+            showToasty(context, "Нет соединения с сервером")
+        }, // Обработка нажатия кнопки
         modifier = Modifier.padding(end = 16.dp)
     ) {
         Text("Показать график")
     }
+}
+fun showToasty(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
 
 private fun setupChartData(points: List<Point>): ChartData {

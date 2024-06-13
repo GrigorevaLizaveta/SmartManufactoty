@@ -1,6 +1,5 @@
 package ru.protei.smart
 
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,19 +41,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import ru.protei.smart.domain.Sensor
 import ru.protei.smart.domain.Thing
 import ru.protei.smart.ui.theme.PurpleGrey80
 
 
-val ReservRooms = arrayOf("Помещение 1", "Помещение 2", "Добавить")
+val ReservRooms = arrayOf("Помещение 1", "Добавить")
 
 @Composable
 fun PageMain(
     onButtonClick: () -> Unit,
     onButtonClick2: () -> Unit,
     onButtonClickTh: () -> Unit,
+    onButtonClickRoom: () -> Unit,
     onButtonClickS: () -> Unit,// Функция для обработки нажатия на кнопку "Посмотреть статистику"
     onSensorItemClick: (Sensor) -> Unit, // Функция для обработки нажатия на элемент списка датчиков
     onThItemClick: (Thing) -> Unit,
@@ -73,7 +72,7 @@ fun PageMain(
             modifier = Modifier.padding(5.dp),
             verticalAlignment = Alignment.Bottom
         ) {
-            RoomsDropdown(ReservRooms)
+            RoomsDropdown(ReservRooms) { onButtonClickRoom() }
         }
         //Сорт по помещениям
         Row(
@@ -230,13 +229,14 @@ fun ThingListScreen(thData: List<Thing>, onItemClick2: (Thing) -> Unit) {
 }
 
 
-//Сюда со стороны передается лист с датчиками
+//Сюда со стороны передается лист с помещениями
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoomsDropdown(sensorList: Array<String>) {
+fun RoomsDropdown(sensorList: Array<String>, onButtonClickRoom: () -> Unit) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(ReservRooms[0]) }
+    var selectedText by remember { mutableStateOf(sensorList[0]) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -259,13 +259,18 @@ fun RoomsDropdown(sensorList: Array<String>) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                sensorList.forEach { item ->
+                sensorList.forEachIndexed { index, item ->
                     DropdownMenuItem(
                         text = { Text(text = item) },
                         onClick = {
                             selectedText = item
                             expanded = false
-                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                            if (index == sensorList.size - 1) {
+                                Toast.makeText(context, "Нет соединения с сервером", Toast.LENGTH_SHORT).show()
+                                onButtonClickRoom() // Вызываем функцию onButtonClickRoom
+                            } else {
+                                Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     )
                 }
@@ -273,5 +278,3 @@ fun RoomsDropdown(sensorList: Array<String>) {
         }
     }
 }
-
-

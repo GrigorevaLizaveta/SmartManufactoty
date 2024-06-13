@@ -16,6 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".MainAddTypeTh"
+            android:exported="false"
+            android:label="@string/title_activity_main_add_type_th"
+            android:theme="@style/Theme.Smart" />
+        <activity
+            android:name=".MainActiv"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.Smart" />
+        <activity
             android:name=".MainAddType"
             android:exported="false"
             android:label="@string/title_activity_main_add_type"
@@ -45,11 +55,11 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Smart">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ThinfoActivity"
@@ -71,11 +81,13 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Smart">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
     </application>
 

@@ -9,4 +9,6 @@
     <string name="title_activity_main_show_th_table">MainShowThTable</string>
     <string name="title_activity_main_add_room">MainAddRoom</string>
     <string name="title_activity_main_add_type">MainAddType</string>
+    <string name="title_activity_main">MainActiv</string>
+    <string name="title_activity_main_add_type_th">MainAddTypeTh</string>
 </resources>

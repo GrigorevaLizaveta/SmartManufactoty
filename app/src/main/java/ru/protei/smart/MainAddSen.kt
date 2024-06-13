@@ -1,5 +1,6 @@
 package ru.protei.smart
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -53,7 +54,10 @@ class MainAddSen : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting()
+                    Greeting(onButtonClickRoom = { val intent = Intent(this@MainAddSen, MainAddRoom::class.java)
+                        this@MainAddSen.startActivity(intent)},
+                        onButtonClickT = { val intent = Intent(this@MainAddSen, MainAddType::class.java)
+                            this@MainAddSen.startActivity(intent)})
                 }
             }
         }
@@ -64,7 +68,7 @@ class MainAddSen : ComponentActivity() {
 ////Добавление датчика
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun Greeting(modifier: Modifier = Modifier) {
+    fun Greeting(modifier: Modifier = Modifier,  onButtonClickRoom: () -> Unit, onButtonClickT: () -> Unit) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -93,7 +97,7 @@ class MainAddSen : ComponentActivity() {
                 modifier = Modifier.padding(5.dp),
                 verticalAlignment = Alignment.Bottom
             ) {
-                TDropdown()
+                TDropdown{ onButtonClickT() }
             }
             Row {
                 Text(
@@ -107,7 +111,7 @@ class MainAddSen : ComponentActivity() {
                 modifier = Modifier.padding(5.dp),
                 verticalAlignment = Alignment.Top
             ) {
-                RDropdown()
+                RDropdown { onButtonClickRoom() }
                 FloatingActionButton(
                     onClick = {},
                     modifier = Modifier
@@ -178,11 +182,11 @@ class MainAddSen : ComponentActivity() {
     ////типы
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun TDropdown() {
-        val sensorList = arrayOf("Датчик света", "Датчик дыма", "Добавить")
+    fun TDropdown( onButtonClickT: () -> Unit ) {
+        val sensorListU = arrayOf("Датчик света", "Добавить")
         val context = LocalContext.current
         var expanded by remember { mutableStateOf(false) }
-        var selectedText by remember { mutableStateOf(ReservRooms[0]) }
+        var selectedText by remember { mutableStateOf(sensorListU[0]) }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -205,13 +209,22 @@ class MainAddSen : ComponentActivity() {
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
-                    sensorList.forEach { item ->
+                    sensorListU.forEachIndexed { index, item ->
                         DropdownMenuItem(
                             text = { Text(text = item) },
                             onClick = {
                                 selectedText = item
                                 expanded = false
-                                Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                                if (index == sensorListU.size - 1) {
+                                    Toast.makeText(
+                                        context,
+                                        "Нет соединения с сервером",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    onButtonClickT() // Вызываем функцию onButtonClickRoom
+                                } else {
+                                    Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                                }
                             }
                         )
                     }
@@ -225,11 +238,11 @@ class MainAddSen : ComponentActivity() {
 ////типы
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun RDropdown() {
-        val sensorList = arrayOf("Помещение 1", "Помещение 2", "Добавить")
+    fun RDropdown(onButtonClickRoom: () -> Unit) {
+        val sensorList = arrayOf("Помещение 1", "Добавить")
         val context = LocalContext.current
         var expanded by remember { mutableStateOf(false) }
-        var selectedText by remember { mutableStateOf(ReservRooms[0]) }
+        var selectedText by remember { mutableStateOf(sensorList[0]) }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -252,14 +265,23 @@ class MainAddSen : ComponentActivity() {
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
-                    sensorList.forEach { item ->
+                    sensorList.forEachIndexed { index, item ->
                         DropdownMenuItem(
                             text = { Text(text = item) },
                             onClick = {
                                 selectedText = item
                                 expanded = false
-                                Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-                            }
+                                if (index == sensorList.size - 1) {
+                                    Toast.makeText(
+                                        context,
+                                        "Нет соединения с сервером",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    onButtonClickRoom() // Вызываем функцию onButtonClickRoom
+                                } else {
+                                    Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                                }
+                                }
                         )
                     }
                 }

@@ -1,6 +1,7 @@
 package ru.protei.smart
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
@@ -60,6 +61,7 @@ class MainAddRoom : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             var password by remember { mutableStateOf("") }
+            var pass by remember { mutableStateOf("") }
 
             Row {
                 Text(
@@ -68,6 +70,20 @@ class MainAddRoom : ComponentActivity() {
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row {
+                Text(
+                    text = "Укажите название:",
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp),
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+            OutlinedTextField(
+                value = pass,
+                onValueChange = { pass = it },
+                label = { Text("Введите значение") },
+                //keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            )
             Spacer(modifier = Modifier.height(16.dp))
             Row {
                 Text(
@@ -85,7 +101,7 @@ class MainAddRoom : ComponentActivity() {
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
-                // обработка нажатия кнопки входа
+                    Toast.makeText(this@MainAddRoom, "Нет соединения с сервером", Toast.LENGTH_SHORT).show()
             }) {
                 Text("Добавить")
             }
